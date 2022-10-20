@@ -1,0 +1,24 @@
+@import '../../vars';
+
+.button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background: $primary-color;
+  border-radius: 80px;
+  font-family: $main-font-family;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 4px 18px;
+  box-sizing: border-box;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+    background: $hover-color;
+  }
+  &:disabled {
+    background: $disabled-color;
+    color: #fff;
+  }
+}

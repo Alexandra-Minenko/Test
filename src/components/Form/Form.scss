@@ -1,0 +1,233 @@
+@import '../../vars';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h2 {
+    text-align: center;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 40px;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: $main-font-family;
+    padding: 0;
+    margin: 0 0 50px;
+  }
+
+  form {
+    width: 380px;
+    .listInputs {
+      #phone {
+        margin: 0 0 4px;
+      }
+      label {
+        position: relative;
+        font-family: $main-font-family;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+        color: #7e7e7e;
+        margin: 0 0 0 14px;
+
+        input {
+          font-family: $main-font-family;
+          font-size: 16px;
+          line-height: 26px;
+          border: 1px solid #d0cfcf;
+          border-radius: 4px;
+          box-sizing: border-box;
+          padding: 14px 16px;
+          width: 100%;
+          margin: 0 0 50px;
+         
+          input {
+            color: #7e7e7e;
+          }
+        }
+        span {
+          position: absolute;
+          background: #fff;
+          padding: 5px;
+          box-sizing: border-box;
+          top: 5px;
+          z-index: 1;
+          width: 70px
+        }
+        div {
+          position: absolute;
+          bottom: -50px;
+          left: 2px;
+          color: red;
+        }
+      }
+    }
+
+    .radioBtns {
+      p {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 26px;
+        font-family: $main-font-family;
+        color: rgba(0, 0, 0, 0.87);
+        padding: 0;
+        margin: 0 0 11px;
+      }
+      .radioBtnsList {
+        .custom-radio {
+          input[type='radio'] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+          }
+          span {
+            display: flex;
+            align-items: center;
+            position: relative;
+            font-family: $main-font-family;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 26px;
+            margin: 0 0 7px;
+            padding: 0;
+          } 
+          span::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 1px solid #d0cfcf;
+            display: inline-block;
+            margin-right: 12px;
+            border-radius: 100%;
+          }
+          span::after {
+            content: '';
+            position: absolute;
+            left: 11px;
+            transform:translate(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: $secondary-color;
+            border-radius: 100%;
+            opacity: 0;
+          }
+          input[type='radio']:checked + span::before {
+            border: 1px solid $secondary-color;
+          }
+          input[type='radio']:checked + span::after {
+            opacity: 1;
+          }           
+        }
+      }
+
+      .input__wrapper {
+        width: 100%;
+        position: relative;
+        margin: 15px 0;
+        text-align: center;
+      }
+       
+      .input__file {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+      }
+       
+      .input__file-icon-wrapper {
+        height: 60px;
+        width: 60px;
+        margin-right: 15px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        border-right: 1px solid #fff;
+      }
+       
+      .input__file-button-text {
+        line-height: 1;
+        margin-top: 1px;
+      }
+
+    }
+
+    .input-file {
+      display: flex;
+      margin: 50px 0;
+      position: relative;
+      div {
+        display: flex;
+        width: 100%;
+        .input-file-btn {
+          position: relative;
+          cursor: pointer;
+          border: 1px solid rgba(0, 0, 0, 0.87);
+          border-radius: 4px 0px 0px 4px;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 26px;
+          color: rgba(0, 0, 0, 0.87);
+          font-family: $main-font-family;
+          height: 54px;
+          padding: 14px 15px;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+        }
+        input[type=file] {
+          position: absolute;
+          z-index: -1;
+          opacity: 0;
+          display: block;
+          width: 0;
+          height: 0;
+        }
+        
+        .input-file-text {  
+          border-radius: 0 6px 6px 0;
+          width: 100%;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 26px;
+          color: #7e7e7e;
+          font-family: $main-font-family;
+          height: 54px;
+          padding: 14px 15px;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          border: 1px solid #D0CFCF;
+        }
+      }
+      .error {
+        position: absolute;
+        bottom: -50px;
+        left: 2px;
+        color: red;
+      }
+    }
+    
+    .btn {
+      display: flex;
+      justify-content: center;
+    }
+}
+}
+
+@media(min-width: 360px) and (max-width: 767px) {
+  .form {
+    padding: 0 16px;
+    box-sizing: border-box;
+    form {
+      width: 100%;
+    }
+  }
+}

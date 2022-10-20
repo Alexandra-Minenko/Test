@@ -1,0 +1,53 @@
+@import '../../vars';
+.users {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 140px 60px;
+
+  h2 {
+    margin: 0 0 50px 0;
+    padding: 0;
+    font-size: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-family: $main-font-family;
+    font-weight: 400;
+  }
+
+  .userList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0 0 21px 0;
+  }
+
+  span {
+    margin: 0;
+    padding: 0;
+    height: 0;
+  }
+}
+@media(min-width: 1170px) {
+  .users {
+    margin: 140px 0;
+  }
+}
+@media(min-width: 768px ) and (max-width: 1123px) {
+  .users {
+    margin: 140px 32px;
+  }
+}
+@media(min-width: 360px) and (max-width: 767px) {
+  .users {
+    margin: 140px 0;
+    justify-content: center;
+
+    .userList {
+      margin: 0;
+      justify-content: center;
+    }
+  
+  }
+}

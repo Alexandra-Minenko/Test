@@ -1,0 +1,32 @@
+.header {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 60px;
+  box-sizing: border-box;
+
+    .btns-section {
+      display: flex;
+      align-items: center;
+
+      #btn {
+        margin-right: 10px;
+      }
+    }
+}
+@media(min-width: 1170px) {
+  .header {
+    padding: 13px 0;
+  }
+}
+@media(min-width: 768px ) and (max-width: 1123px) {
+  .header {
+    padding: 13px 32px;
+  }
+}
+@media(min-width: 360px) and (max-width: 767px) {
+  .header {
+    padding: 13px 16px;
+  }
+}
