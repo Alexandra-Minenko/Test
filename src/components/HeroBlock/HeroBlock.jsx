@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../../common/Button/Button';
 
-import './Hero_block.scss'
+import './HeroBlock.scss'
 
 const HeroBlock = () => {
   return (       
