@@ -1,12 +1,18 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import Button from '../../common/Button/Button';
+import { AuthContext } from '../../context';
 
 import './Form.scss'
 
-const Form = () => {
-  let token = '';
+const Form = (props) => {
+  const {count, setCount, 
+         newUser, setNewUser,
+         setUsers} = useContext(AuthContext);
+  const [positions, setPositions] = useState([])
+  const [token, setToken] = useState('');
+  const navigate = useNavigate();
 
   const { 
     register, 
@@ -14,27 +20,23 @@ const Form = () => {
     handleSubmit,
     reset
   } = useForm({
-    mode: 'onBlur',
+    mode: 'all',
     shouldFocusError: true
   });
 
-  const onSubmit = (data) => {
-    postData (data);
-    reset()
-}
-
-const [positions, setPositions] = useState([])
-
   React.useEffect(() => {
+    getToken();
     getPositions();
-    getToken()
   }, [])
 
   function getToken() {
-    fetch('https://frontend-test-assignment-api.abz.agency/api/v1/token') 
-    .then(function(response) { return response.json(); }) 
+    fetch(`https://frontend-test-assignment-api.abz.agency/api/v1/token`) 
+    .then(function(response) {
+      return response.json()}) 
     .then(function(data) { 
-      token = data.token }) 
+      setToken(data.token)
+
+     }) 
     .catch(function(error) { console.log(error) });
   }
 
@@ -46,27 +48,59 @@ const [positions, setPositions] = useState([])
       })
   }
 
-  function postData (data) {
+  
+  function postData(userData) {
     fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', 
-          { method: 'POST', body: JSON.stringify(data), 
-            headers: {'Token': JSON.stringify(token)}}) 
-    .then(function(response) { return response.json(); }) 
-    .then(function(data) { console.log(data); 
+          { method: 'POST', 
+            body: userData,
+            headers: {'Token': JSON.stringify(token)} 
+          }) 
+    .then(function(response) { 
+      return response.json(); }) 
+    .then(function(data) {
+      console.log(data);
       if(data.success) {  
-        console.log('User aded!')
+        console.log('User aded!');
+        setUsers([]);
+        setCount(1);
+        props.getUsers(1);
       } else {
         console.log('something went wrong!')
-       } }) 
+       }  
+      }) 
+  }
+
+  function onSubmit(data) {
+
+    let formData = new FormData();
+    let fileField = document.querySelector('input[type="file"]');
+
+    formData.append('position_id', data.position_id);
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('phone', data.phone);
+    formData.append('photo', fileField.files[0]);
+
+    postData (formData);
+    reset();
+    setNewUser({...newUser, ...data});
+    navigate(`/userRegistered`)
   }
   
   let $ = require('jquery');
   window.$ = window.jQuery = $;
 
   $('.input-file input[type=file]').on('change', function(){
-    let file = this.files[0];
-    $(this).closest('.input-file').find('.input-file-text').html(file.name);
-  });
 
+    let file = this.files[0];
+    let size = this.files[0].size;
+
+    $(this).closest('.input-file').find('.input-file-text').html(file.name);
+
+    if(5000000 < size){
+      console.log('File size should be no more than 50mb')
+    }
+  });
 
   return (       
     <div className='form'>
@@ -75,15 +109,24 @@ const [positions, setPositions] = useState([])
         <div className='listInputs'>
           <label>
             <span>Your name</span>
-            <input type='text'
+            <input type='text' 
               {...register('name', 
                 {
                   required: 'Required field',
+                  minLength: {
+                    value: 2,
+                    message: 'Minimum 2 characters'
+                  },
+                  maxLength: {
+                    value: 60,
+                    message: 'Maximum 60 characters'
+                  },
                   pattern: {
-                  value: /^[A-Za-z]+$/i,
+                  value: /^[A-Za-z]+$/,
                   message:'Incorrect format'
                 }
-                })} 
+                })}
+              style={{ border: errors?.name && '2px solid #cb3d40'}} 
               placeholder='Your name'/>
               <div>
               {errors?.name && <p>{errors?.name.message || 'Error!'}</p>}
@@ -96,10 +139,11 @@ const [positions, setPositions] = useState([])
               {
                 required: 'Required field',
                 pattern: {
-                value: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i,
+                value: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/,
                 message:'Incorrect format'
               }
               })}
+              style={{ border: errors?.email && '2px solid #cb3d40'}}
             placeholder='Email'/>
             <div>
               {errors?.email && <p>{errors?.email.message || 'Error!'}</p>}
@@ -107,15 +151,16 @@ const [positions, setPositions] = useState([])
           </label>
           <label>
             <span>Phone</span>
-            <input type="tel" 
+            <input type='tel' 
               {...register('phone', 
               {
                 required: 'Required field',
                 pattern: {
                 value: /^[\+]{0,1}380([0-9]{9})$/i,
-                message:'Incorrect format, you should use +38 (XXX) XXX-XX-XX'
+                message:'Incorrect format, you should use +38XXXXXXXXXX'
               }
               })}
+              style={{ border: errors?.phone && '2px solid #cb3d40'}}
               placeholder='Phone'/>
             <div>
               {errors?.phone && <p>{errors?.phone.message || 'Error!'}</p>}
@@ -139,18 +184,24 @@ const [positions, setPositions] = useState([])
             }
           </div>  
         </div>
-        <label className="input-file">      
+        <label className='input-file'>      
           <div>
-            <span className="input-file-btn">Upload</span>
-            <input type="file" 
-                  name="file" 
-                  accept='image/png, image/jpeg'  
+            <span className='input-file-btn' 
+                  style={{ border: errors?.photo && '2px solid #cb3d40'}}>
+                  Upload</span>
+            <input type='file' 
+                  name='photo' 
+                  accept='image/jpg, image/jpeg'  
                   {...register('photo', 
                   {
                     required: 'Required field',
-                  })} 
+                  })}
+                  
                   />
-            <span className="input-file-text" type="text">Upload your photo</span>
+            <span className='input-file-text' 
+                  type='text' 
+                  style={{ border: errors?.photo && '2px solid #cb3d40'}}>
+                  Upload your photo</span>
           </div>
           <div className='error'>
             {errors?.photo && <p>{errors?.photo.message || 'Error!'}</p>}
