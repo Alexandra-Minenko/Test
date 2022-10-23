@@ -20,6 +20,12 @@
   form {
     width: 380px;
     .listInputs {
+      display: flex;
+      flex-direction: column;
+      justify-content:space-around;
+      align-items: stretch;
+      width: 100%;
+      padding: 0;
       #phone {
         margin: 0 0 4px;
       }
@@ -30,7 +36,7 @@
         font-size: 12px;
         line-height: 14px;
         color: #7e7e7e;
-        margin: 0 0 0 14px;
+        margin: 0;
 
         input {
           font-family: $main-font-family;
@@ -41,25 +47,22 @@
           box-sizing: border-box;
           padding: 14px 16px;
           width: 100%;
-          margin: 0 0 50px;
-         
-          input {
-            color: #7e7e7e;
-          }
+          margin: 0 0 50px 0;
+          color: #7e7e7e;
         }
         span {
           position: absolute;
           background: #fff;
           padding: 5px;
           box-sizing: border-box;
-          top: 5px;
+          top: -13px;
+          left: 13px;
           z-index: 1;
-          width: 70px
         }
         div {
           position: absolute;
-          bottom: -50px;
-          left: 2px;
+          bottom: 18px;
+          left: 18px;
           color: red;
         }
       }

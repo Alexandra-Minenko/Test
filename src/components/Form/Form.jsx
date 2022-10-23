@@ -108,7 +108,7 @@ const Form = (props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='listInputs'>
           <label>
-            <span>Your name</span>
+            <span className='label-item'>Your name</span>
             <input type='text' 
               {...register('name', 
                 {
@@ -127,13 +127,14 @@ const Form = (props) => {
                 }
                 })}
               style={{ border: errors?.name && '2px solid #cb3d40'}} 
-              placeholder='Your name'/>
-              <div>
-              {errors?.name && <p>{errors?.name.message || 'Error!'}</p>}
-              </div>
+              placeholder='Your name'
+              />
+            <div>
+            {errors?.name && <p>{errors?.name.message || 'Error!'}</p>}
+            </div>
           </label>         
           <label>
-            <span>Email</span>
+            <span className='label-item'>Email</span>
             <input type='email'
             {...register('email', 
               {
@@ -149,7 +150,7 @@ const Form = (props) => {
               {errors?.email && <p>{errors?.email.message || 'Error!'}</p>}
             </div>
           </label>
-          <label>
+          <label className='label-item'>
             <span>Phone</span>
             <input type='tel' 
               {...register('phone', 
